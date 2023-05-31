@@ -18,4 +18,9 @@ if place:
         figure = px.line(x=dates, y=temp, labels={"x": "Date", "y": "Temperature (C)"})
         st.plotly_chart(figure)
     if option == "Sky":
-        filter_data = [dict["weather"][0]["main"] for dict in data]
+        images = {"Clear": "images/clear.png", "Clouds": "images/cloud.png",
+                  "Rain": "images/rain.png", "Snow": "images/snow.png"}
+        sky = [dict["weather"][0]["main"] for dict in data]
+        image_path = [images[condition] for condition in sky]
+
+        st.image(image_path, width=115)
