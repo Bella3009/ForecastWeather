@@ -8,11 +8,14 @@ days = st.slider("Forecast Days", min_value=1, max_value=5, help="Select the num
 option = st.selectbox("Select data to view", ("Temperature", "Sky"))
 st.subheader(f"{option} for the next {days} days in {place}")
 
+if place:
+    data = gt(place, days)
+    dates = [dict["dt_txt"] for dict in data]
 
-data = gt(1,2,2)
-
-temp_dates = ["2022-10-25", "2022-10-26", "2022-10-27"]
-temp_temp = [10, 11, 15]
-
-figure = px.line(x=temp_dates, y=temp_temp, labels={"x": "Date", "y": "Temperature (C)"})
-st.plotly_chart(figure)
+    if option == "Temperature":
+        temp = [dict["main"]["temp"] for dict in data]
+        # Create graph
+        figure = px.line(x=dates, y=temp, labels={"x": "Date", "y": "Temperature (C)"})
+        st.plotly_chart(figure)
+    if option == "Sky":
+        filter_data = [dict["weather"][0]["main"] for dict in data]
